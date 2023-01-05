@@ -1,7 +1,9 @@
 <nav class="navbar navbar-expand-sm navbar-dark bg-secondary d-flex justify-content-between">
-    <a class="navbar-brand" href="#">INVOICE GENERATOR</a>
-    <div>
-        <a class="text-white" href="https://github.com/ngdevelop-tech/angular-pdfmake-invoice-generator" target="_blank"><i class="fa fa-github fa-2x" aria-hidden="true"></i></a>
+    <img src="../assets/logo.jpg" alt="logo" width="150" height="60">
+    <a class="navbar-brand" href="#">SUNSHINE TRAVEL AND TOURISM-KSA</a>
+    <div class="navbar-brand">
+        <p>Email: sagarmathacargo@gmail.com <br> Phone: +966565395154, +966582437102</p>
+        <p>C.R: 1010757556 <br> VAT:  302128660500003</p>
     </div>
 </nav>
 <form #invoiceForm="ngForm">
@@ -25,6 +27,18 @@
                                         [ngClass]="{'is-invalid': invoiceForm.submitted && Address.invalid}"
                                         [(ngModel)]="invoice.address" #Address="ngModel" required></textarea>
                                 </div>
+                                <div class="form-group">
+                                    <label for="invoiceNo">Invoice No.</label>
+                                    <input type="text" class="form-control" name="invoiceNo" id="invoiceNo"
+                                           [ngClass]="{'is-invalid': invoiceForm.submitted && InvoiceNo.invalid}"
+                                           [(ngModel)]="invoice.invoiceNo" #InvoiceNo="ngModel" required>
+                                </div>
+                                <div class="form-group">
+                                    <label for="vatNo">VAT No.</label>
+                                    <input type="number" class="form-control" name="vatNo" id="vatNo"
+                                           [ngClass]="{'is-invalid': invoiceForm.submitted && VatNo.invalid}"
+                                           [(ngModel)]="invoice.vatNo" #VatNo="ngModel">
+                                </div>
                             </div>
                             <div class="col-md-4">
                                 <div class="form-group">
@@ -38,41 +52,103 @@
                                         [ngClass]="{'is-invalid': invoiceForm.submitted && ContactNo.invalid}"
                                         [(ngModel)]="invoice.contactNo" #ContactNo="ngModel" required>
                                 </div>
+                                <div class="form-group">
+                                    <label for="pnr">PNR</label>
+                                    <input type="text" class="form-control" name="pnr" id="pnr"
+                                           [ngClass]="{'is-invalid': invoiceForm.submitted && PNR.invalid}"
+                                           [(ngModel)]="invoice.pnr" #PNR="ngModel" required>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="card border-secondary mt-2">
                     <div class="card-body">
+                        <div class="form-group">
+                            <label for="airlines">Airlines</label>
+                            <select class="form-control" name="airlines" id="airlines"
+                                    [ngClass]="{'is-invalid': invoiceForm.submitted && Airlines.invalid}"
+                                    [(ngModel)]="invoice.airlines" #Airlines="ngModel" required>
+                                <option value="">Select Airlines</option>
+                                <option>Airarabia(g9)</option>
+                                <option>flydubai (fz)</option>
+                                <option>Salam (ov)</option>
+                                <option>Jazeera (j9)</option>
+                                <option>Citylink travels</option>
+                                <option>Akabar travels</option>
+                                <option>Cozmo travels</option>
+                            </select>
+                        </div>
                         <h4 class="card-title d-flex justify-content-between">Order Details <button type="button"
                                 class="btn btn-secondary" (click)="addProduct()">+</button></h4>
                         <div class="row">
                             <table class="table">
                                 <thead>
                                     <tr>
-                                        <th width="25%">Product</th>
-                                        <th width="25%">Price</th>
-                                        <th width="25%">Quantity</th>
-                                        <th width="25%">Amount</th>
+                                        <th width="10%">Ticket Number</th>
+                                        <th width="30%">Passenger Name</th>
+                                        <th width="10%">Sector</th>
+                                        <th width="10%">Flight No.</th>
+                                        <th width="10%">One Way</th>
+                                        <th width="15%">Date of Travel</th>
+                                        <th width="10%">Quantity</th>
+                                        <th width="10%">Price</th>
+                                        <th width="10%">Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr *ngFor="let product of invoice.products; let i=index">
                                         <td scope="row">
-                                            <input type="text" class="form-control" name="productName{{i}}"
-                                                [ngClass]="{'is-invalid': invoiceForm.submitted && ProductName.invalid}"
-                                                id="productName" [(ngModel)]="product.name" #ProductName="ngModel"
-                                                required>
+                                            <input type="text" class="form-control" name="ticketNumber{{i}}"
+                                                   [ngClass]="{'is-invalid': invoiceForm.submitted && TicketNumber.invalid}"
+                                                   id="ticketNumber" [(ngModel)]="product.ticketNumber" #TicketNumber="ngModel"
+                                                   required>
+                                        </td>
+                                        <td scope="row">
+                                            <input type="text" class="form-control" name="passengerName{{i}}"
+                                                   [ngClass]="{'is-invalid': invoiceForm.submitted && PassengerName.invalid}"
+                                                   id="passengerName" [(ngModel)]="product.passengerName" #PassengerName="ngModel"
+                                                   required>
+                                        </td>
+                                        <td scope="row">
+                                            <input type="text" class="form-control" name="sector{{i}}"
+                                                   [ngClass]="{'is-invalid': invoiceForm.submitted && Sector.invalid}"
+                                                   id="sector" [(ngModel)]="product.sector" #Sector="ngModel"
+                                                   required>
+                                        </td>
+                                        <td scope="row">
+                                            <input type="text" class="form-control" name="flightNumber{{i}}"
+                                                   [ngClass]="{'is-invalid': invoiceForm.submitted && FlightNumber.invalid}"
+                                                   id="flightNumber" [(ngModel)]="product.flightNumber" #FlightNumber="ngModel"
+                                                   required>
+                                        </td>
+                                        <td scope="row">
+                                            <input
+                                                    type="checkbox"
+                                                    [checked]="product.oneWay"
+                                                    (change)="clearDateOfTravel(product)"/>
+                                        </td>
+                                        <td scope="row">
+                                            <input type="date" class="form-control" name="dateOfTravel{{i}}"
+                                                   [ngClass]="{'is-invalid': invoiceForm.submitted && DateOfTravel.invalid}"
+                                                   id="dateOfTravel" [(ngModel)]="product.dateOfTravel" #DateOfTravel="ngModel"
+                                                   required>
+                                            <div *ngIf="!product.oneWay">
+                                                <input type="date" class="form-control" name="returnDateOfTravel{{i}}"
+                                                       [ngClass]="{'is-invalid': invoiceForm.submitted && returnDateOfTravel.invalid}"
+                                                       id="returnDateOfTravel" [(ngModel)]="product.returnDateOfTravel" #returnDateOfTravel="ngModel"
+                                                       required>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <input type="number" class="form-control" name="quantity{{i}}" id="quantity"
+                                                   [ngClass]="{'is-invalid': invoiceForm.submitted && ProductQty.invalid}"
+                                                   [(ngModel)]="product.qty" #ProductQty="ngModel" required>
                                         </td>
                                         <td>
                                             <input type="number" class="form-control" name="price{{i}}" id="price"
                                                 [ngClass]="{'is-invalid': invoiceForm.submitted && ProductPrice.invalid}"
                                                 [(ngModel)]="product.price" #ProductPrice="ngModel" required>
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" name="quantity{{i}}" id="quantity"
-                                                [ngClass]="{'is-invalid': invoiceForm.submitted && ProductQty.invalid}"
-                                                [(ngModel)]="product.qty" #ProductQty="ngModel" required>
                                         </td>
                                         <td>
                                             {{product.price * product.qty || ''}}
@@ -83,16 +159,6 @@
                         </div>
                     </div>
                 </div>
-                <div class="card border-secondary mt-2">
-                    <div class="card-body">
-                        <h4 class="card-title">Additional Details</h4>
-                        <div class="form-group">
-                            <textarea class="form-control" name="additionalDetails" rows="3"
-                                [(ngModel)]="invoice.additionalDetails"></textarea>
-                        </div>
-                    </div>
-                </div>
-
             </div>
             <div class="col-md-4">
                 <button type="button" class="btn btn-secondary btn-lg btn-block"
@@ -110,8 +176,8 @@
 <footer class="fixed-bottom">
     <div class="bg-light text-center p-2">
         <h6>Made with 💗 by
-            <a class="twitter-follow-button" href="https://twitter.com/ankit_ngdevelop" target="_blank"> <i class="fa fa-twitter"
-                    aria-hidden="true"></i>Ankit_NgDevelop</a>.
+            <a href="www.objectivesolution.com.au" target="_blank"> <i
+                    aria-hidden="true"></i>Objective solutions</a>.
         </h6>
     </div>
 </footer>
